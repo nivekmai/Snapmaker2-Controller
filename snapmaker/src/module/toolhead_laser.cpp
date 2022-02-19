@@ -193,6 +193,7 @@ uint16_t ToolHeadLaser::tim_pwm() {
   return TimGetPwm();
 }
 void ToolHeadLaser::tim_pwm(uint16_t pwm) {
+  LOG_I("tim_pwm: %d\n", pwm);
   TimSetPwm(pwm);
 }
 
@@ -222,8 +223,11 @@ void ToolHeadLaser::PwmCtrlDirectly(uint8_t duty) {
 }
 
 void ToolHeadLaser::TurnOff() {
+  LOG_I("-- attempting turn off\n");
   if (state_ == TOOLHEAD_LASER_STATE_OFFLINE)
     return;
+
+  LOG_I("-- actually turning off\n");
 
   if (laser->device_id_ == MODULE_DEVICE_ID_10W_LASER) {
     if (laser_10w_status_ != LASER_10W_DISABLE) {
@@ -915,6 +919,7 @@ ErrCode ToolHeadLaser::SetProtectTemp(SSTP_Event_t &event) {
 }
 
 ErrCode ToolHeadLaser::LaserControl(uint8_t state) {
+  LOG_I("LaserControl: %d", state);
   CanStdFuncCmd_t cmd;
   uint8_t can_buffer[1];
 
